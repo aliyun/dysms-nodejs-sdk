@@ -1,5 +1,5 @@
 {
-  "name": "aliyun-dysms-sdk",
+  "name": "@alicloud/sms-sdk",
   "version": "1.0.0",
   "description": "云通信-短信产品SDK",
   "main": "index.js",
