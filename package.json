@@ -1,7 +1,7 @@
 {
   "name": "aliyun-dysms-sdk",
   "version": "1.0.0",
-  "description": "",
+  "description": "云通信-短信产品SDK",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
