@@ -20,7 +20,6 @@ class SMSClient {
         if (!secretAccessKey) {
             throw new TypeError('parameter "secretAccessKey" is required');
         }
-        this.options = options
         this.dysmsapiClient = new DysmsapiClient({accessKeyId, secretAccessKey, endpoint: DYSMSAPI_ENDPOINT})
         this.dybaseClient = new DybaseapiClient({accessKeyId, secretAccessKey, endpoint: DYBASEAPI_ENDPOINT})
         this.expire = []
@@ -50,15 +49,9 @@ class SMSClient {
 
     //根据类型获取mnsclient实例
     async _getMNSClient(type) {
-        console.log('type',type)
-        console.log('type',type)
-
         if (this.mnsClient && (this.mnsClient[type] instanceof MNSClient) && this._refresh(type)) {
-            console.log('使用老的实例')
             return this.mnsClient[type]
         }
-
-        console.log('使用新的实例')
 
         let {
             MessageTokenDTO:{
@@ -68,9 +61,6 @@ class SMSClient {
             }
         }=await this._getToken(type)
 
-        console.log('SecurityToken', SecurityToken)
-        console.log('AccessKeyId', AccessKeyId)
-        console.log('AccessKeySecret', AccessKeySecret)
 
         if (!(AccessKeyId && AccessKeySecret && SecurityToken)) {
             throw new TypeError('get token fail')
@@ -87,7 +77,6 @@ class SMSClient {
             internal: false, // use internal endpoint
             vpc: false // use vpc endpoint
         })
-        console.log('是不是实例',mnsClient instanceof MNSClient)
         this.mnsClient[type] = mnsClient
         this.expire[type] = (new Date().getTime() + 10 * 60 * 1000)
         return mnsClient

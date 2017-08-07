@@ -5,7 +5,6 @@
 
 const SMSClient = require('./../index')
 
-
 // ACCESS_KEY_ID/ACCESS_KEY_SECRET 根据实际申请的账号信息进行替换
 const accessKeyId = 'yourAccessKeyId'
 const secretAccessKey = 'yourAccessKeySecret'
@@ -16,30 +15,6 @@ const queueName = 'Alicom-Queue-1092397003988387-'
 //初始化sms_client
 let smsClient = new SMSClient({accessKeyId, secretAccessKey})
 
-/*async function testDemo() {
- let smsReport = await smsClient.receiveMsg(0, queueName)
- let SmsUp = await smsClient.receiveMsg(1, queueName)
- let details = await smsClient.queryDetail({
- PhoneNumber: '18040585200',
- SendDate: '20170711',
- PageSize: '10',
- CurrentPage: "1"
- })
- let sendSMS = await smsClient.sendSMS({
- PhoneNumbers: '18040585200',
- SignName: '阿里云短信测试专用',
- TemplateCode: 'SMS_71390007',
- TemplateParam: '{"customer":"ql"}'
- })
- let SmsUp1 = await smsClient.receiveMsg(1, queueName)
-
- console.log(smsReport)
- console.log(SmsUp)
- console.log(details)
- console.log(sendSMS)
- }
-
- testDemo()*/
 //短信回执报告
 smsClient.receiveMsg(0, queueName).then(function (res) {
     //消息体需要base64解码
@@ -65,32 +40,7 @@ smsClient.receiveMsg(1, queueName).then(function (res) {
 })
 
 
-//短信上行报告
-smsClient.receiveMsg(1, queueName).then(function (res) {
-    //消息体需要base64解码
-    let {code, body}=res
-    if (code === 200) {
-        //处理消息体,messagebody
-        console.log(body)
-    }
-}, function (err) {
-    console.log(err)
-})
-
-
-setTimeout(function () {
-    //短信上行报告
-    smsClient.receiveMsg(1, queueName).then(function (res) {
-        //消息体需要base64解码
-        let {code, body}=res
-        if (code === 200) {
-            //处理消息体,messagebody
-            console.log(body)
-        }
-    }, function (err) {
-        console.log(err)
-    })
-}, 9 * 60 * 1000)
+//查询短信发送详情
 smsClient.queryDetail({
     PhoneNumber: '1500000000',
     SendDate: '20170731',
@@ -107,7 +57,7 @@ smsClient.queryDetail({
     console.log(err)
 })
 
-
+//发送短信
 smsClient.sendSMS({
     PhoneNumbers: '1500000000',
     SignName: '云通信产品',
