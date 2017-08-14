@@ -8,8 +8,8 @@
 1. 安装@alicloud/sms-sdk,请需要根据官方文档做一些配置
 2. 产品文档: https://dysms.console.aliyun.com/dysms.htm
 
-
 ### DEMO
+
 ``` javascript
 /**
  * 云通信基础能力业务短信发送、查询详情以及消费消息示例，供参考。
