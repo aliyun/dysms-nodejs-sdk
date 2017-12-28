@@ -16,7 +16,7 @@
  * Created on 2017-07-31
  */
 
-const SMSClient = require('./../index')
+const SMSClient = require('@alicloud/sms-sdk')
 
 // ACCESS_KEY_ID/ACCESS_KEY_SECRET 根据实际申请的账号信息进行替换
 const accessKeyId = 'yourAccessKeyId'
