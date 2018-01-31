@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@alicloud/dybaseapi": "^1.0.0",
-    "@alicloud/dysmsapi": "^1.0.0",
-    "@alicloud/mns": "^1.0.0-beta4"
+    "@alicloud/dysmsapi-2017-05-25": "^1.0.0",
+    "@alicloud/mns": "^1.0.0-beta6"
   }
 }

@@ -28,6 +28,22 @@ const queueName = 'Alicom-Queue-1092397003988387-'
 //初始化sms_client
 let smsClient = new SMSClient({accessKeyId, secretAccessKey})
 
+smsClient.sendBatchSMS({
+    PhoneNumberJson: JSON.stringify(['18040585200', '15088655526']),
+    SignNameJson: JSON.stringify(['短信迁移测试签名','短信迁移测试签名']),
+    TemplateCode: 'SMS_71175823',
+    TemplateParamJson: JSON.stringify([{code: "1234", product: "ytx1"}, {code: "5678", product: "ytx2"}]),
+}).then(function (res) {
+    let {Code}=res
+    if (Code === 'OK') {
+       //处理返回参数
+       console.log(res)
+    }
+}, function (err) {
+    console.log('err', err)
+})
+
+
 //短信回执报告
 smsClient.receiveMsg(0, queueName).then(function (res) {
     //消息体需要base64解码
