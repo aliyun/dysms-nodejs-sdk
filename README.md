@@ -29,7 +29,7 @@ const queueName = 'Alicom-Queue-1092397003988387-'
 let smsClient = new SMSClient({accessKeyId, secretAccessKey})
 
 smsClient.sendBatchSMS({
-    PhoneNumberJson: JSON.stringify(['18040585200', '15088655526']),
+    PhoneNumberJson: JSON.stringify(['18040580000', '15088650000']),
     SignNameJson: JSON.stringify(['短信迁移测试签名','短信迁移测试签名']),
     TemplateCode: 'SMS_71175823',
     TemplateParamJson: JSON.stringify([{code: "1234", product: "ytx1"}, {code: "5678", product: "ytx2"}]),
