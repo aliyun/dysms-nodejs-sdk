@@ -15,16 +15,16 @@ const msgTypeList = ["SmsReport", "SmsUp"]
 const DYSMSAPI_ENDPOINT = 'http://dysmsapi.aliyuncs.com'
 const DYBASEAPI_ENDPOINT = 'http://dybaseapi.aliyuncs.com'
 function hasOwnProperty(obj, key) {
-  return Object.prototype.hasOwnProperty.call(obj, key);
+  return Object.prototype.hasOwnProperty.call(obj, key)
 }
 class SMSClient {
   constructor(options) {
     let {accessKeyId, secretAccessKey}=options
     if (!accessKeyId) {
-      throw new TypeError('parameter "accessKeyId" is required');
+      throw new TypeError('parameter "accessKeyId" is required')
     }
     if (!secretAccessKey) {
-      throw new TypeError('parameter "secretAccessKey" is required');
+      throw new TypeError('parameter "secretAccessKey" is required')
     }
     this.dysmsapiClient = new DysmsapiClient({accessKeyId, secretAccessKey, endpoint: DYSMSAPI_ENDPOINT})
     this.dybaseClient = new DybaseapiClient({accessKeyId, secretAccessKey, endpoint: DYBASEAPI_ENDPOINT})
@@ -35,11 +35,11 @@ class SMSClient {
   //群发短信
   sendBatchSMS(params) {
     if (!hasOwnProperty(params, 'TemplateCode')) {
-      throw new TypeError('parameter "TemplateCode" is required');
+      throw new TypeError('parameter "TemplateCode" is required')
     }
-    params.templateParamJson=params.TemplateParamJson
+    params.templateParamJson = params.TemplateParamJson
     delete params.TemplateParamJson
-    return this.dysmsapiClient.sendBatchSms(params,{formatParams:false})
+    return this.dysmsapiClient.sendBatchSms(params, {formatParams: false})
   }
 
   //发送短信
