@@ -7,9 +7,10 @@
  */
 
 'use strict';
-import DysmsapiClient from '@alicloud/dysmsapi-2017-05-25'
-import DybaseapiClient from '@alicloud/dybaseapi'
-import MNSClient from '@alicloud/mns'
+const DysmsapiClient = require('@alicloud/dysmsapi-2017-05-25')
+const DybaseapiClient = require('@alicloud/dybaseapi')
+const MNSClient = require('@alicloud/mns')
+
 // 短信回执报告：SmsReport，短信上行：SmsUp
 const msgTypeList = ["SmsReport", "SmsUp"]
 const DYSMSAPI_ENDPOINT = 'http://dysmsapi.aliyuncs.com'
