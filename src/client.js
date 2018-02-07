@@ -10,17 +10,18 @@
 const DysmsapiClient = require('@alicloud/dysmsapi-2017-05-25')
 const DybaseapiClient = require('@alicloud/dybaseapi')
 const MNSClient = require('@alicloud/mns')
-
 // 短信回执报告：SmsReport，短信上行：SmsUp
 const msgTypeList = ["SmsReport", "SmsUp"]
 const DYSMSAPI_ENDPOINT = 'http://dysmsapi.aliyuncs.com'
 const DYBASEAPI_ENDPOINT = 'http://dybaseapi.aliyuncs.com'
+
 function hasOwnProperty(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key)
 }
+
 class SMSClient {
   constructor(options) {
-    let {accessKeyId, secretAccessKey}=options
+    let {accessKeyId, secretAccessKey} = options
     if (!accessKeyId) {
       throw new TypeError('parameter "accessKeyId" is required')
     }
@@ -35,11 +36,6 @@ class SMSClient {
 
   //群发短信
   sendBatchSMS(params) {
-    if (!hasOwnProperty(params, 'TemplateCode')) {
-      throw new TypeError('parameter "TemplateCode" is required')
-    }
-    params.templateParamJson = params.TemplateParamJson
-    delete params.TemplateParamJson
     return this.dysmsapiClient.sendBatchSms(params, {formatParams: false})
   }
 
@@ -70,12 +66,12 @@ class SMSClient {
       return this.mnsClient[type]
     }
     let {
-      MessageTokenDTO:{
+      MessageTokenDTO: {
         SecurityToken,
         AccessKeyId,
         AccessKeySecret
       }
-    }=await this._getToken(type)
+    } = await this._getToken(type)
     if (!(AccessKeyId && AccessKeySecret && SecurityToken)) {
       throw new TypeError('get token fail')
     }
@@ -100,6 +96,7 @@ class SMSClient {
     return await mnsClient.receiveMessage(preQueueName + msgTypeList[typeIndex], waitSeconds)
   }
 }
+
 module.exports = SMSClient
 
 

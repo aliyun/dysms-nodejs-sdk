@@ -7,6 +7,5 @@ function supportAsyncFunctions() {
     return false;
   }
 }
-console.log(supportAsyncFunctions())
 module.exports = supportAsyncFunctions() ?
   require('./src/client.js') : require('./lib/client.js');

@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/sms-sdk",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "阿里云-云通信-短信产品SDK",
   "keywords": [
     "SDK",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@alicloud/dybaseapi": "^1.0.0",
-    "@alicloud/dysmsapi-2017-05-25": "^1.0.0",
+    "@alicloud/dysmsapi-2017-05-25": "^1.0.1",
     "@alicloud/mns": "^1.0.0-beta6"
   }
 }
