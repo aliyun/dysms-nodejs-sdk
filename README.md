@@ -7,6 +7,7 @@
 ### 使用方法
 1. 安装@alicloud/sms-sdk,请需要根据官方文档做一些配置
 2. 产品文档: https://dysms.console.aliyun.com/dysms.htm
+3. Node.js版本 >= v4.6.0
 
 ### DEMO
 
