@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/sms-sdk",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "阿里云-云通信-短信产品SDK",
   "keywords": [
     "SDK",
