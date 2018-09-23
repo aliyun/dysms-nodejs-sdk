@@ -21,22 +21,22 @@ function hasOwnProperty(obj, key) {
 
 class SMSClient {
   constructor(options) {
-    let {accessKeyId, secretAccessKey} = options
+    let { accessKeyId, secretAccessKey } = options
     if (!accessKeyId) {
       throw new TypeError('parameter "accessKeyId" is required')
     }
     if (!secretAccessKey) {
       throw new TypeError('parameter "secretAccessKey" is required')
     }
-    this.dysmsapiClient = new DysmsapiClient({accessKeyId, secretAccessKey, endpoint: DYSMSAPI_ENDPOINT})
-    this.dybaseClient = new DybaseapiClient({accessKeyId, secretAccessKey, endpoint: DYBASEAPI_ENDPOINT})
+    this.dysmsapiClient = new DysmsapiClient({ accessKeyId, secretAccessKey, endpoint: DYSMSAPI_ENDPOINT })
+    this.dybaseClient = new DybaseapiClient({ accessKeyId, secretAccessKey, endpoint: DYBASEAPI_ENDPOINT })
     this.expire = []
     this.mnsClient = []
   }
 
   //群发短信
   sendBatchSMS(params) {
-    return this.dysmsapiClient.sendBatchSms(params, {formatParams: false})
+    return this.dysmsapiClient.sendBatchSms(params, { formatParams: false })
   }
 
   //发送短信
@@ -57,7 +57,7 @@ class SMSClient {
   //获取token
   _getToken(type) {
     let msgType = msgTypeList[type]
-    return this.dybaseClient.queryTokenForMnsQueue({MessageType: msgType})
+    return this.dybaseClient.queryTokenForMnsQueue({ MessageType: msgType })
   }
 
   //根据类型获取mnsclient实例
@@ -91,9 +91,15 @@ class SMSClient {
   }
 
   //typeIndex :0 为回执,1为上行
-  async receiveMsg(typeIndex = 0, preQueueName, waitSeconds = 10) {
+  async receiveMsg(typeIndex = 0, preQueueName, waitSeconds = 10, isDel = false) {
+    const queueName = preQueueName + msgTypeList[typeIndex]
     let mnsClient = await this._getMNSClient(typeIndex)
-    return await mnsClient.receiveMessage(preQueueName + msgTypeList[typeIndex], waitSeconds)
+    const res = await mnsClient.receiveMessage(queueName, waitSeconds)
+    const { code, body: { ReceiptHandle } } = res;
+    if (isDel && code === 200 && ReceiptHandle) {
+      await mnsClient.deleteMessage(queueName, ReceiptHandle)
+    }
+    return res;
   }
 }
 

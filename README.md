@@ -7,7 +7,7 @@
 ### 使用方法
 1. 安装@alicloud/sms-sdk,请需要根据官方文档做一些配置
 2. 产品文档: https://dysms.console.aliyun.com/dysms.htm
-3. Node.js版本 >= v4.6.0
+3. Node.js版本 >= v7.6.0
 
 ### DEMO
 
@@ -45,8 +45,8 @@ smsClient.sendBatchSMS({
 })
 
 
-//短信回执报告
-smsClient.receiveMsg(0, queueName).then(function (res) {
+//短信回执报告，5表示5s=>未被删除的消息再次推送等待时间，true表示消费完进行删除（默认为false）
+smsClient.receiveMsg(0, queueName, 5, true).then(function (res) {
     //消息体需要base64解码
     let {code, body}=res
     if (code === 200) {
@@ -57,8 +57,8 @@ smsClient.receiveMsg(0, queueName).then(function (res) {
     console.log(err)
 })
 
-//短信上行报告
-smsClient.receiveMsg(1, queueName).then(function (res) {
+//短信上行报告，5表示5s=>未被删除的消息再次推送等待时间,true表示消费完进行删除（默认为false）
+smsClient.receiveMsg(1, queueName, 5, true).then(function (res) {
     //消息体需要base64解码
     let {code, body}=res
     if (code === 200) {
