@@ -26,8 +26,20 @@ const secretAccessKey = 'yourAccessKeySecret'
 //在云通信页面开通相应业务消息后，就能在页面上获得对应的queueName,不用填最后面一段
 const queueName = 'Alicom-Queue-1092397003988387-'
 
-//初始化sms_client
-let smsClient = new SMSClient({accessKeyId, secretAccessKey})
+// vpc需要配置,华东1示例：请查看 https://help.aliyun.com/document_detail/68360.html
+const smsApiEndpoint = 'http://dysmsapi-vpc.cn-hangzhou.aliyuncs.com'
+const baseApiEndpoint = 'http://dybaseapi-vpc.cn-hangzhou.aliyuncs.com'
+const regionId = 'cn-hangzhou' 
+const mnsVpc = {
+    secure: false, // use https or http
+    internal: true, // use internal endpoint
+    vpc: true
+}
+
+
+
+//初始化sms_client, 后面4个参数vpc需要配置
+let smsClient = new SMSClient({accessKeyId, secretAccessKey, smsApiEndpoint, baseApiEndpoint, regionId, mnsVpc})
 
 smsClient.sendBatchSMS({
     PhoneNumberJson: JSON.stringify(['18040580000', '15088650000']),
@@ -87,13 +99,13 @@ smsClient.queryDetail({
     console.log(err)
 })
 
-//发送短信
+//发送短信, vpc配置options={method:'POST'}，改为POST请求
 smsClient.sendSMS({
     PhoneNumbers: '1500000000',
     SignName: '云通信产品',
     TemplateCode: 'SMS_000000',
     TemplateParam: '{"code":"12345","product":"云通信"}'
-}).then(function (res) {
+},options).then(function (res) {
     let {Code}=res
     if (Code === 'OK') {
         //处理返回参数
