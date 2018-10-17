@@ -14,6 +14,7 @@ const MNSClient = require('@alicloud/mns')
 const msgTypeList = ["SmsReport", "SmsUp"]
 const DYSMSAPI_ENDPOINT = 'http://dysmsapi.aliyuncs.com'
 const DYBASEAPI_ENDPOINT = 'http://dybaseapi.aliyuncs.com'
+const DEFAULT_REGION = 'cn-hangzhou'
 
 function hasOwnProperty(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key)
@@ -21,32 +22,47 @@ function hasOwnProperty(obj, key) {
 
 class SMSClient {
   constructor(options) {
-    let { accessKeyId, secretAccessKey } = options
+    let { accessKeyId, secretAccessKey, smsApiEndpoint, baseApiEndpoint, regionId, mnsVpc } = options
     if (!accessKeyId) {
       throw new TypeError('parameter "accessKeyId" is required')
     }
     if (!secretAccessKey) {
       throw new TypeError('parameter "secretAccessKey" is required')
     }
-    this.dysmsapiClient = new DysmsapiClient({ accessKeyId, secretAccessKey, endpoint: DYSMSAPI_ENDPOINT })
-    this.dybaseClient = new DybaseapiClient({ accessKeyId, secretAccessKey, endpoint: DYBASEAPI_ENDPOINT })
+    this.dysmsapiClient = new DysmsapiClient({
+      accessKeyId,
+      secretAccessKey,
+      regionId: regionId || DEFAULT_REGION,
+      endpoint: smsApiEndpoint || DYSMSAPI_ENDPOINT
+    })
+    this.dybaseClient = new DybaseapiClient({
+      accessKeyId,
+      secretAccessKey,
+      regionId: regionId || DEFAULT_REGION,
+      endpoint: baseApiEndpoint || DYBASEAPI_ENDPOINT
+    })
+    this.mnsVpc = mnsVpc || {
+      secure: false, // use https or http
+      internal: false, // use internal endpoint
+      vpc: false
+    }
     this.expire = []
     this.mnsClient = []
   }
 
   //群发短信
-  sendBatchSMS(params) {
-    return this.dysmsapiClient.sendBatchSms(params, { formatParams: false })
+  sendBatchSMS(params, options = {}) {
+    return this.dysmsapiClient.sendBatchSms(params, { formatParams: false, ...options })
   }
 
   //发送短信
-  sendSMS(params) {
-    return this.dysmsapiClient.sendSms(params)
+  sendSMS(params, options = {}) {
+    return this.dysmsapiClient.sendSms(params, options)
   }
 
   //查询详情
-  queryDetail(params) {
-    return this.dysmsapiClient.querySendDetails(params)
+  queryDetail(params, options = {}) {
+    return this.dysmsapiClient.querySendDetails(params, options)
   }
 
   //失效时间与当前系统时间比较，提前2分钟刷新token
@@ -77,13 +93,14 @@ class SMSClient {
     }
     let mnsClient = new MNSClient('1943695596114318', {
       securityToken: SecurityToken,
-      region: 'cn-hangzhou',
+      region: DEFAULT_REGION,
       accessKeyId: AccessKeyId,
       accessKeySecret: AccessKeySecret,
       // optional & default
       secure: false, // use https or http
       internal: false, // use internal endpoint
-      vpc: false // use vpc endpoint
+      vpc: false, // use vpc endpoint
+      ...this.mnsVpc
     })
     this.mnsClient[type] = mnsClient
     this.expire[type] = (new Date().getTime() + 10 * 60 * 1000)
